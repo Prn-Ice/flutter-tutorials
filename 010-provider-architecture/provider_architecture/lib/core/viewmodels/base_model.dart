@@ -10,4 +10,9 @@ class BaseModel extends ChangeNotifier {
     _state = viewState;
     notifyListeners();
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }

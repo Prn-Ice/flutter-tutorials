@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider_architecture/core/enums/view_state.dart';
 import 'package:provider_architecture/core/models/comment.dart';
+import 'package:provider_architecture/core/viewmodels/comments_model.dart';
 import 'package:provider_architecture/ui/shared/app_colors.dart';
 import 'package:provider_architecture/ui/shared/ui_helpers.dart';
+import 'package:provider_architecture/ui/views/base_view.dart';
 
 class Comments extends StatelessWidget {
   final int postId;
@@ -9,7 +13,21 @@ class Comments extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('I am comments '));
+    return BaseView<CommentsModel>(
+      onModelComplete: (model) {
+        model.fetchComments(postId);
+      },
+      builder: (context, model, child) => model.state == ViewState.Busy
+          ? CircularProgressIndicator()
+          : Expanded(
+              child: ListView.builder(
+                itemCount: model.comments.length,
+                itemBuilder: (context, index) => CommentItem(
+                  model.comments[index],
+                ),
+              ),
+            ),
+    );
   }
 }
 

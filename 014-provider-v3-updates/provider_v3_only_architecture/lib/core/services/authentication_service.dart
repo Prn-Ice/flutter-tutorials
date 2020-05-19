@@ -8,16 +8,20 @@ class AuthenticationService {
 
   AuthenticationService({Api api}) : _api = api;
 
-  StreamController<User> _userController = StreamController<User>();
+  /*StreamController<User> _userController = StreamController<User>();
 
-  Stream<User> get user => _userController.stream;
+  Stream<User> get user => _userController.stream;*/
+  User _user;
+
+  User get user => _user;
 
   Future<bool> login(int userId) async {
     var fetchedUser = await _api.getUserProfile(userId);
 
     var hasUser = fetchedUser != null;
     if (hasUser) {
-      _userController.add(fetchedUser);
+//      _userController.add(fetchedUser);
+      _user = fetchedUser;
     }
 
     return hasUser;
